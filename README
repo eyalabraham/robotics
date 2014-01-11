@@ -1,0 +1,16 @@
+The directories in this repository contain source code for the following related projects:
+
+Directory    Project
+---------    --------------
+amr\         1) source code for autonomous mobile robot project
+                requires the SMTE executive code library
+             2) sources also include windows console source code for
+                driver programs running on laptop attached manager
+
+smte\        small multi-tasking executive
+             task switching executive for x86 CPU, 8088/8086/NEC-V25
+             compile in 16-bit "small" memory model
+
+comredir\    windows console application
+             provide "Y" split of a single COM port
+             needs to use 'com0com' driver utility

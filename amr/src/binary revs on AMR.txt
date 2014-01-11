@@ -1,0 +1,12 @@
+AMREX04 .EXE   10/20 5:27pm build
+AMREX00 .EXE   11/25 2:01pm build with data logging
+
+COMMAND .LST   command file
+DOWN    .COM   x-model download
+EDIT    .COM   line text editor
+GP2D02  .EXE   gp2d, servo, SONAR test program
+LIST    .BAT   formatted dos DIR command
+MOUSE   .EXE   wheel encoder/bumper switch test program for mouse hack
+SRVTEST .EXE   servo test program
+STARTUP .EXE   system startup program
+TEST    .EXE   general io and functional test program (display, motors watch-dox-model upload

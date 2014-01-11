@@ -1,0 +1,631 @@
+Comparing files AMREX.C and C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\AMREX.C
+***** AMREX.C
+   39:  
+   40:  #define   FILE_NAME_LEN      11
+   41:  #define   DEFAULT_COMMAND    "command.lst"
+   42:  
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\AMREX.C
+   39:  
+   40:  #define    PARAMETER_FILE  "command.lst" 
+   41:  
+*****
+
+***** AMREX.C
+   61:  int
+   62:  parseCommandFile(char* szFile)
+   63:  {
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\AMREX.C
+   60:  int
+   61:  parseCommandFile(const char* szFile)
+   62:  {
+*****
+
+***** AMREX.C
+   76:      {
+   77:       printf("ERR: parseCommandFile(): Cannot open command file '%s'\n", szFile);
+   78:       return 0;
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\AMREX.C
+   75:      {
+   76:       printf("ERR: parseCommandFile(): Cannot open command file.\n");
+   77:       return 0;
+*****
+
+***** AMREX.C
+   80:  
+   81:   printf("INFO: parsing command file '%s'\n", szFile);
+   82:  
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\AMREX.C
+   79:  
+   80:   printf("INFO: parsing command file\n");
+   81:  
+*****
+
+***** AMREX.C
+  132:  int
+  133:  main(int argc, char* argv[])
+  134:  {
+  135:   char szCommandFile[FILE_NAME_LEN + 1] = {DEFAULT_COMMAND};
+  136:   int  i;
+  137:   
+  138:   // parse command line parameters:
+  139:   // harness [-v] [-f <command_file>]
+  140:   //   '-v' print build and verion information
+  141:   //   '-f' provide alternate command file, default is 'command.lst'
+  142:   for ( i = 1; i < argc; i++ )
+  143:   {
+  144:       if ( strcmp(argv[i], "-v") == 0 )
+  145:       {
+  146:          printf("BUILD: amrex.exe %s %s\n", __DATE__, __TIME__);
+  147:          return 0;
+  148:       }
+  149:       else if ( strcmp(argv[i], "-f") == 0 )
+  150:       {
+  151:           if (i + 1 < argc) // check that a file name was supplied
+  152:           {
+  153:               i++;
+  154:               strncpy(szCommandFile, argv[i], FILE_NAME_LEN);
+  155:           }
+  156:       }
+  157:       else
+  158:       {
+  159:          printf("FAIL: main(), bad command line option '%s'\n", argv[i]);
+  160:          return 1;
+  161:       }
+  162:   }
+  163:   
+  164:   // build date
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\AMREX.C
+  131:  int
+  132:  main(void)
+  133:  {
+  134:   // build date
+*****
+
+***** AMREX.C
+  171:   // system initialization from command file
+  172:   assert(parseCommandFile(szCommandFile));
+  173:  
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\AMREX.C
+  141:   // system initialization from command file
+  142:   assert(parseCommandFile(PARAMETER_FILE));
+  143:  
+*****
+
+
+Comparing files messages.h and C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\INC\MESSAGES.H
+***** messages.h
+  125:  #define    SN_STOW            1
+  126:  #define    SN_POINT           2
+  127:  #define    SN_MEASURE         3
+  128:  #define    SN_GETHC08STAT     4
+  129:  //  < dwPayload >
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\INC\MESSAGES.H
+  125:  #define    SN_STOW            1
+  126:  #define    SN_SCAN            2
+  127:  #define    SN_POINT           3
+  128:  #define    SN_MEASURE         4
+  129:  #define    SN_GETHC08STAT     5
+  130:  //  < dwPayload >
+*****
+
+***** messages.h
+  130:  //    for N_STOW     = DW_DONT_CARE
+  131:  //    for N_POINT    = point direction
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\INC\MESSAGES.H
+  131:  //    for N_STOW     = DW_DONT_CARE
+  132:  //    for N_SCAN     = trigger distance (not implemented)
+  133:  //                     in [cm] fixed point Qm.n
+  134:  //    for N_POINT    = point direction
+*****
+
+***** messages.h
+  232:  // -----------------------------------------
+  233:  //  HC08 microprocessos state
+  234:  //  response to x_DIST_MODE with x_HC08STAT
+  235:  //  < bPayload >
+  236:  #define    SN_HC08STAT       61
+  237:  //  < wPayload >  = HC08 status word
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\INC\MESSAGES.H
+  235:  // -----------------------------------------
+  236:  //  SCAN mode distance trigger
+  237:  //  < bPayload >
+  238:  #define    SN_SCAN_TRIG      61
+  239:  //  < wPayload >  = HC08 status word
+*****
+
+***** messages.h
+  240:  
+  241:  /* =========================================
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\INC\MESSAGES.H
+  242:  
+  243:  // -----------------------------------------
+  244:  //  HC08 microprocessos state
+  245:  //  response to x_DIST_MODE with x_HC08STAT
+  246:  //  < bPayload >
+  247:  #define    SN_HC08STAT       62
+  248:  //  < wPayload >  = HC08 status word
+  249:  //  < dwPayload > = DW_DONT_CARE
+  250:  // -----------------------------------------
+  251:  
+  252:  /* =========================================
+*****
+
+***** messages.h
+  255:  //  initiate log dump
+  256:  #define    MS_DATA_LOG       71
+  257:  //  < wPayload >
+  258:  #define    MS_RESET          0
+  259:  #define    MS_PRINT          1  // <- any non-zero value will control printout grouping
+  260:  //  < dwPayload > = DW_DONT_CARE
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\INC\MESSAGES.H
+  266:  //  initiate log dump
+  267:  #define    MS_PRINT_DATA_LOG  71
+  268:  //  < wPayload >  = W_DONT_CARE
+  269:  //  < dwPayload > = DW_DONT_CARE
+*****
+
+Comparing files smte.c and C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\SMTE.C
+***** smte.c
+ 1063:  void
+ 1064:  dumpDataLog(int nGroupDelimiter)
+ 1065:  {
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\SMTE.C
+ 1063:  void
+ 1064:  dumpDataLog(const int nGroupDelimiter)
+ 1065:  {
+*****
+
+***** smte.c
+ 1067:   int   i;
+ 1068:   
+ 1069:   if ( nGroupDelimiter == 0 )
+ 1070:      {
+ 1071:       nDataLogCount = 0;
+ 1072:       print("<dump-reset>\r\n");
+ 1073:       return;
+ 1074:      }
+ 1075:      
+ 1076:   print("<dump>\r\n");
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\SMTE.C
+ 1067:   int   i;
+ 1068:  
+ 1069:   print("<dump>\r\n");
+*****
+
+***** smte.c
+ 1097:  
+ 1098:    nDataLogCount = 0; // reset trace buffer
+ 1099:  
+ 1100:    print("</dump>\r\n");
+ 1101:  }
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\SMTE.C
+ 1090:  
+ 1091:   print("</dump>\r\n");
+ 1092:   
+ 1093:   nDataLogCount = 0; // reset trace buffer
+ 1094:  }
+*****
+
+Comparing files t_ctrlex.c and C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_CTRLEX.C
+***** t_ctrlex.c
+  654:  
+  655:       case MS_DATA_LOG: // trigger a trace dump
+  656:            dumpDataLog((int) wPayload);
+  657:            break;
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_CTRLEX.C
+  654:  
+  655:       case MS_PRINT_DATA_LOG: // trigger a trace dump
+  656:            dumpDataLog(1);
+  657:            break;
+*****
+
+Comparing files t_distex.c and C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+***** t_distex.c
+   25:  
+   26:  /* -----------------------------------------
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+   25:  
+   26:  #define  SCAN_DIR_INTRVL_MSEC 500 // mSec between scan positions
+   27:  #define  SCAN_POSITIONS       4   // number of scan positions
+   28:  
+   29:  /* -----------------------------------------
+*****
+
+***** t_distex.c
+   30:  void stow(void);
+   31:  void point(void);
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+   33:  void stow(void);
+   34:  void scan(void);
+   35:  void point(void);
+*****
+
+***** t_distex.c
+   38:                STATE_STOW = 0,  // stop scan and stow sensor
+   39:                STATE_POINT      // point sensor for distance measurment
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+   42:                STATE_STOW = 0,  // stop scan and stow sensor
+   43:                STATE_SCAN,      // scan with pattern
+   44:                STATE_POINT      // point sensor for distance measurment
+*****
+
+***** t_distex.c
+   48:  
+   49:  int               nPointDir     = CENTER_FP;
+   50:  
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+   53:  
+   54:  int        nPosition[SCAN_POSITIONS] = {CENTER_FP,
+   55:                                          0x0018,  // +0.75 [rad] right 45 deg
+   56:                                          CENTER_FP,
+   57:                                          0xffe8}; // -0.75 [rad]  left 45 deg
+   58:  
+   59:  int        nPointDir                 = CENTER_FP;
+   60:  
+*****
+
+***** t_distex.c
+   83:  
+   84:                case SN_POINT:
+   85:                     nPointDir = (int) dwPayload;
+   86:                     distanceState = STATE_POINT;
+   87:                     break;
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+   93:  
+   94:                case SN_SCAN:
+   95:                     distanceState = STATE_SCAN;
+   96:                     break;
+*****
+
+***** t_distex.c
+   88:  
+   89:                case SN_GETHC08STAT:
+   90:                     wPayload = hc08GetStatus();
+   91:                     putMsg(nNavTask, SN_HC08STAT, wPayload, DW_DONT_CARE);
+   92:                     break;
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+   97:  
+   98:                case SN_POINT:
+   99:                     nPointDir = (int) dwPayload;
+  100:                     distanceState = STATE_POINT;
+  101:                     break;
+*****
+
+***** t_distex.c
+   93:  
+   94:                default:
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+  102:  
+  103:                case SN_GETHC08STAT:
+  104:                     wPayload = hc08GetStatus();
+  105:                     putMsg(nNavTask, SN_HC08STAT, wPayload, DW_DONT_CARE);
+  106:                     break;
+  107:  
+  108:                default:
+*****
+
+***** t_distex.c
+  105:  /* -----------------------------------------
+  106:     point()
+  107:  
+  108:     point and measure state.
+  109:  ----------------------------------------- */
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+  119:  /* -----------------------------------------
+  120:     scan()
+  121:  
+  122:     distance sensor scan state.
+  123:  ----------------------------------------- */
+*****
+
+***** t_distex.c
+  110:  void
+  111:  point(void)
+  112:  {
+  113:   BYTE        bMsg;
+  114:   WORD        wPayload;
+  115:   DWORD       dwPayload;
+  116:  
+  117:   int         nDistance;
+  118:   int         nIsTriggered;
+  119:  
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+  124:  void
+  125:  scan(void)
+  126:  {
+  127:   static int nPosIndex = 0; // static to preserve between calls
+  128:  
+  129:   int        nDistance;
+  130:   int        nIsTriggered;
+  131:   BYTE       bMsg;
+  132:   WORD       wPayload;
+  133:   DWORD      dwPayload;
+  134:  
+*****
+
+***** t_distex.c
+  120:   // position servo head
+  121:   servoSetAngle(nPointDir);
+  122:  
+  123:   // wait for message
+  124:   bMsg = waitMsg(__ANY__, 0, &wPayload, &dwPayload);
+  125:  
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+  135:   // position servo head
+  136:   servoSetAngle(nPosition[nPosIndex]);
+  137:  
+  138:   // wait for new mode message or time-out
+  139:   // time out will create a full scan pattern (4 positions) in 1[sec]
+  140:   bMsg = waitMsg(__ANY__, SCAN_DIR_INTRVL_MSEC, &wPayload, &dwPayload);
+  141:  
+*****
+
+***** t_distex.c
+  128:      {
+  129:       // change scan mode, redirect sensor or measure distance
+  130:       case SN_DIST_MODE:
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+  144:      {
+  145:       // measure distance
+  146:       case Q_EMPTY:
+  147:            nIsTriggered = gp2d02Trigger();
+  148:  
+  149:            if ( nIsTriggered )
+  150:            {
+  151:               suspend(45);
+  152:               nDistance = gp2d02GetDistance();
+  153:               nDistance = gp2d02DataToDistance(nDistance);
+  154:               putMsg(nNavTask, SN_DISTANCE, (WORD) nDistance, (DWORD) nPosition[nPosIndex]);
+  155:            }
+  156:            else
+  157:            {
+  158:               putMsg(nNavTask, SN_DISTANCE, (WORD) 0, (DWORD) nPosition[nPosIndex]);
+  159:            }
+  160:  
+  161:            // setup next scan position
+  162:            nPosIndex++;
+  163:            if ( nPosIndex >= SCAN_POSITIONS )
+  164:               nPosIndex = 0;
+  165:  
+  166:            break;
+  167:  
+  168:       // change scan mode
+  169:       case SN_DIST_MODE:
+*****
+
+***** t_distex.c
+  133:                case SN_STOW:
+  134:                     distanceState = STATE_STOW;
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+  172:                case SN_STOW:
+  173:                     nPosIndex = 0;
+  174:                     distanceState = STATE_STOW;
+*****
+
+***** t_distex.c
+  136:  
+  137:                case SN_POINT:
+  138:                     nPointDir = (int) dwPayload;
+  139:                     break;
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+  176:  
+  177:                case SN_SCAN: // do nothing
+  178:                     break;
+*****
+
+***** t_distex.c
+  140:  
+  141:                case SN_MEASURE:
+  142:                     nIsTriggered = gp2d02Trigger();
+  143:  
+  144:                     if ( nIsTriggered )
+  145:                     {
+  146:                        suspend(45);
+  147:                        nDistance = gp2d02GetDistance();
+  148:                        nDistance = gp2d02DataToDistance(nDistance);
+  149:  
+  150:                        // SN_MEASURE will never come from t_ctrlex only from t_nav
+  151:                        putMsg(nNavTask, SN_DISTANCE, (WORD) nDistance, (DWORD) nPointDir);
+  152:                     }
+  153:                     else
+  154:                     {
+  155:                        putMsg(nNavTask, SN_DISTANCE, (WORD) 0, (DWORD) nPointDir);
+  156:                     }
+  157:                     break;
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+  179:  
+  180:                case SN_POINT:
+  181:                     nPosIndex = 0;
+  182:                     nPointDir = (int) dwPayload;
+  183:                     distanceState = STATE_POINT;
+  184:                     break;
+*****
+
+***** t_distex.c
+  170:  /* -----------------------------------------
+  171:     task function code
+  172:  ----------------------------------------- */
+  173:  
+  174:  void
+  175:  t_dist(void)
+  176:  {
+  177:   static State_Type prevState;
+  178:  
+  179:   /* attach to nav task */
+  180:   nNavTask = getTidByName(TASK_NAME_NAV);
+  181:   if ( nNavTask == 0 )
+  182:      {
+  183:       putDebugMsg(DB_TRACE, DB_BAD_TNAME, __LINE__);
+  184:       return;
+  185:      }
+  186:  
+  187:   /* initialize state machine */
+  188:   distanceState = STATE_STOW;
+  189:   prevState    = ~STATE_STOW;
+  190:  
+  191:   /* start control */
+  192:   while (1)
+  193:      {
+  194:       //print("dist\r\n");
+  195:       
+  196:       if ( prevState != distanceState )
+  197:          {
+  198:           putDebugMsg(DB_TRACE, DB_INFO, (DWORD) distanceState);
+  199:           prevState = distanceState;
+  200:          }
+  201:  
+  202:       switch ( distanceState )
+  203:       {
+  204:        case STATE_STOW:
+  205:             stow();
+  206:             break;
+  207:  
+  208:        case STATE_POINT:
+  209:             point();
+  210:             break;
+  211:  
+  212:        default:
+  213:             distanceState = STATE_STOW;
+  214:             putDebugMsg(DB_TRACE, DB_BAD_PARAM, __LINE__);
+  215:       }
+  216:      } /* endless loop */
+  217:  }
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+  197:  /* -----------------------------------------
+  198:     point()
+  199:  
+  200:     point and measure state.
+  201:  ----------------------------------------- */
+  202:  void
+  203:  point(void)
+  204:  {
+  205:   BYTE        bMsg;
+  206:   WORD        wPayload;
+  207:   DWORD       dwPayload;
+  208:  
+  209:   int         nDistance;
+  210:   int         nIsTriggered;
+  211:  
+  212:   // position servo head
+  213:   servoSetAngle(nPointDir);
+  214:  
+  215:   // wait for message
+  216:   bMsg = waitMsg(__ANY__, 0, &wPayload, &dwPayload);
+  217:  
+  218:   // parse message
+  219:   switch ( bMsg )
+  220:      {
+  221:       // change scan mode, redirect sensor or measure distance
+  222:       case SN_DIST_MODE:
+  223:            switch ( wPayload )
+  224:               {
+  225:                case SN_STOW:
+  226:                     distanceState = STATE_STOW;
+  227:                     break;
+  228:  
+  229:                case SN_SCAN:
+  230:                     distanceState = STATE_SCAN;
+  231:                     break;
+  232:  
+  233:                case SN_POINT:
+  234:                     nPointDir = (int) dwPayload;
+  235:                     break;
+  236:  
+  237:                case SN_MEASURE:
+  238:                     nIsTriggered = gp2d02Trigger();
+  239:  
+  240:                     if ( nIsTriggered )
+  241:                     {
+  242:                        suspend(45);
+  243:                        nDistance = gp2d02GetDistance();
+  244:                        nDistance = gp2d02DataToDistance(nDistance);
+  245:  
+  246:                        // SN_MEASURE will never come from t_ctrlex only from t_nav
+  247:                        putMsg(nNavTask, SN_DISTANCE, (WORD) nDistance, (DWORD) nPointDir);
+  248:                     }
+  249:                     else
+  250:                     {
+  251:                        putMsg(nNavTask, SN_DISTANCE, (WORD) 0, (DWORD) nPointDir);
+  252:                     }
+  253:                     break;
+  254:  
+  255:                default:
+  256:                     putDebugMsg(DB_TRACE, DB_BAD_MSG, __LINE__);
+  257:               } // switch on wPayload
+  258:            break;
+  259:  
+  260:       // default handler
+  261:       default:
+  262:            putDebugMsg(DB_TRACE, DB_BAD_MSG, __LINE__);
+  263:      } // switch on bMsg
+  264:  }
+*****
+
+***** t_distex.c
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_DISTEX.C
+  265:  
+  266:  /* -----------------------------------------
+  267:     task function code
+  268:  ----------------------------------------- */
+  269:  
+  270:  void
+  271:  t_dist(void)
+  272:  {
+  273:   static State_Type prevState;
+  274:  
+  275:   /* attach to nav task */
+  276:   nNavTask = getTidByName(TASK_NAME_NAV);
+  277:   if ( nNavTask == 0 )
+  278:      {
+  279:       putDebugMsg(DB_TRACE, DB_BAD_TNAME, __LINE__);
+  280:       return;
+  281:      }
+  282:  
+  283:   /* initialize state machine */
+  284:   distanceState = STATE_STOW;
+  285:   prevState    = ~STATE_STOW;
+  286:  
+  287:   /* start control */
+  288:   while (1)
+  289:      {
+  290:       //print("dist\r\n");
+  291:       
+  292:       if ( prevState != distanceState )
+  293:          {
+  294:           putDebugMsg(DB_TRACE, DB_INFO, (DWORD) distanceState);
+  295:           prevState = distanceState;
+  296:          }
+  297:  
+  298:       switch ( distanceState )
+  299:       {
+  300:        case STATE_STOW:
+  301:             stow();
+  302:             break;
+  303:  
+  304:        case STATE_SCAN:
+  305:             scan();
+  306:             break;
+  307:  
+  308:        case STATE_POINT:
+  309:             point();
+  310:             break;
+  311:  
+  312:        default:
+  313:             distanceState = STATE_STOW;
+  314:             putDebugMsg(DB_TRACE, DB_BAD_PARAM, __LINE__);
+  315:       }
+  316:      } /* endless loop */
+  317:  }
+*****
+
+Comparing files t_sonar.c and C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_SONAR.C
+***** t_sonar.c
+  156:                PACK_DW(dwPayload, nSampleN_1, nSampleN_2);
+  157:                putMsg((int) wPayload, SONAR_DISTANCE, (WORD) nDetectionValue, dwPayload);
+  158:  
+***** C:\MYDOCS\TEMPDOCS\AMRMYDOCS\AMR\SRC\T_SONAR.C
+  156:                PACK_DW(dwPayload, nSampleN_1, nSampleN_2);
+  157:                putMsg((int) wPayload, SONAR_READ, (WORD) nDetectionValue, dwPayload);
+  158:  
+*****
+

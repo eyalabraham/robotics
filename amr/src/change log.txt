@@ -1,0 +1,208 @@
+11/23/2013
+----------
+t_ctrlex.c
+ modified data log capture on line 552
+
+amrex.exe rebuilt on 11/25/20 @ 2:01pm
+
+11/16/2012
+----------
+
+removed steering value for PID error calculation in line 519 of t_ctrlex
+added '@@' tag for debug documentation text extraction in all relevant putDebugMsg() functions of all code files
+
+10/20/2012
+----------
+
+amrex.exe clean build on 10/20/2012 @ 5:27pm
+
+
+8/3/2012
+--------
+t_ctrlex.c
+ added code to slow platform when closing in on distance travel
+ line #300. test with slow center speed before comitting change
+
+7/14/2012
+----------
+amrex.c
+ command file name length bug fix
+
+t_ctrlex.c
+ DataLOg in PID to measure calculation rate
+
+command.lst -> sense067.lst -> sense050.lst
+  50 mSec interval works, use 50mSec in 'command.lst'
+
+amrex.exe rebuilt 7/14/2012 @ 3:51pm
+
+7/12/2012
+----------
+
+amrex.c
+ added command line parameters
+
+messages.h
+ removed SCAN state
+ added log-dump reset message
+ general clean up
+
+smte.c
+ added support for log-dump reset
+
+t_ctrlex.c
+ added support for log-dump reset support
+
+t_distex.c
+ removed SCAN state
+
+t_sonar.c
+ bug fix to return SONAR_DISTANCE meaasge in response to SONAR_READ
+
+smte.lib rebuilt 7/12/2012 @ 9:52pm
+amrex.exe rebuilt 7/12/2012 @ 9:53pm
+
+
+6/10/2012
+----------
+
+changes on 6/9 did not resolve issue. code in harness works ok as expected.
+
+tried the following changes:
+t_ctrlex.c and t-distex.c
+  replaced the static 'currnetState' with unique variables (static) per module.
+
+amrex.exe
+  rebuilt 6/10 @ 8:01pm
+  tried running with debugLevel=2 had issue, changed to debugLevel=1 *no issue*
+  >> problem was due to debug level !! odd !!
+
+6/9/2012
+---------
+t_ctrlsx.c
+   saved current to t_ctrlex(3).c and modified state function calling to a switch/case construct
+
+t_distex.c
+   converted call table to switch/case as above for t_ctrlex.c
+
+amrex
+   rebuilt  amrex.exe 6/9 @ 7:45pm
+
+6/3/2012
+---------
+t_ctrlex.c
+  saved old rev as t_ctrlex(2).c and made changes:
+   - create list of prototype functions
+   - changed activateMotors to return 'int'
+   - cleaned up some variable types and static types
+   - padded motor control bytes with 00 to get even number of bytes
+   - relocated/consolidated jump table and variables
+   Issue from 5/13 with wall follower is probably due to code/data alignment in AMREX,
+   at one point changes above resolved, but after other changes in t_distex.c problem returned.
+   See 'enum change test.rtf trave' in trace folder
+
+wallfollower.exe in seek()
+   trace on amrex shows that wallfollower enters 'align' before linear stats are returned from the move in the 'seek' state.
+   added SMTERC_waitMsg(MV_LINEAR_STAT ...) after stopping motors when wall is detected.
+   changed 'align' state to re-read distance if measurment read is '0'
+   >> tested above and ok now
+
+t_distex
+   changed enumeration and relocated state function jump table
+
+project
+   changed default to allocate 'enum' and 'int'
+
+amrex.exe
+   rebuilt smte.lib and amrex.exe 6/3 @ 7:05pm
+
+6/2/2012
+---------
+t_ctrlex.c
+  added conditional compile for HARNESS and a puDebugMsg() in setMotorSpeed() lines 246 to 252
+
+amrex.exe
+  rebuilt on 6/2 @ 7:25pm
+  analysis of trace shows that after MV_FORWARD_CMD from follow() state amrex does not enter 'move' state
+  suspect code/data alignment of jump table of state functions
+
+5/27/2012
+----------
+platform.h
+  replaced with fix for 68 click per circumfrance
+
+t_ctrlex.c
+  moved motor activation and speed setup outp() function to same location line #237
+  clean-up line 650..3 and 803..6
+  changed to 'int' from 'short int' in struct motorState_tag, same for 16-bit line 83, 84
+
+amrex4.exe
+  rebuilt amrex.exe with platform.h fix 5/27 @ 9:06pm
+
+5/13/2012
+----------
+fxp.h
+  changed definition of QmnFP_t from 'int' to 'short int'
+  make sure it is 16-bit in both 16 and 32-bit environements
+
+amrex
+  rebuilt for above changes: 5/13 @ 5:43pm (amrex3.exe)
+
+rov.c
+  modified to accept PID constants for AMR for AMR's PID testing
+
+ISSUE:
+  'wallfollower' does not start motors after alignment, comand sent but AMR does not start motors
+   >> with MS_OPEN_LOOP and MV_FORWARD_CMD amr does not move, in ROV it does move but the mode is MS_PID_CTRL
+
+
+5/12/2012
+----------
+t_ctrlex.c
+  added logic in activateMotor() to handle 0-rad or 0-cm move 'limited' commands
+  by separating their handling in lines 273 .. 282 - bug # from 5/11/2012 is fixed.
+
+amrex
+  rebuilt for above changes: 5/12 @ 1:18pm
+
+platform.h
+  changed CM_PER_CLICK_FP from 0xe (+3.5%) to 0xd (-3.8%) from actual value
+
+amrex
+  rebuilt for above change: 5/21 @ 9:42pm (amrex2.exe)
+
+5/11/2012
+----------
+seeker.c
+  added UDP transmit and tested 60[cm] forward movement
+  2 bugs: (1) 0-rad p-turn results in non-stop movement, probaly also will happen with 0-cm move
+          (2) first time tag t_sense sends is very large since it is a delta from the last sense data
+  maybe work around #1 by checking value in seeker before sending to AMR
+  #2 is not an issue since time tag is never used anywhere
+
+4/22/2012
+----------
+amrex
+t_ctrlex.c
+  changed distance input to [cm] line 570,1,2
+  changed distance stats output to [cm] line 160.. and line 172..
+  force report of distance traveled if unlimited travel is commaned and clicks collected go over threshold line 265, line 51
+messages.h
+  for distance command and reporting changes line 64, 148
+
+seeker.c
+   read vectors from file, send tocomands to AMR, read moe stats into vectors
+
+rebuilt 7:51pm
+
+4/21/2012
+----------
+amrex
+ minor clean up in 'messages.h', 't_ctrlex.c' no code changes
+rebuild 2:56pm
+
+linetrack
+rebuild 3:00pm
+
+created seeker.c and seeker project
+  

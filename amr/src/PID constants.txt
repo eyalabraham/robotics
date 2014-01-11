@@ -1,0 +1,31 @@
+linetrack
+-----------------------
+speed at N_SPEED_2
+steering interval at 100mSec
+Cp 0.8125
+Ci 0.5
+Cd 0.0
+
+walltrack
+-----------------------
+speed at N_SPEED_2
+steering interval at 125mSec
+Cp 0.6
+Ci 0.0
+Cd 0.4
+
+amr-cntrl
+-----------------------
+speed at N_SPEED_2
+sample interval at 50mSec
+Cp 0.8125
+Ci 0.5
+Cd 0.0
+
+objtrack (not final)
+-----------------------
+speed at N_SPEED_?
+sample interval at 100mSec
+Cp 0.8
+Ci 0.0
+Cd 0.6
