@@ -51,6 +51,7 @@
 
 #define  TRAVEL_DIST_REPORT_THRESH 0x0392 // max value of click counter to prevent Qmn overflow when converting to [cm]
                                           // this value will report traveled distance every ~400[cm]
+#define  TRAVEL_DIST_REPORT_INTERVAL 1000 // mSec between travel distance report
 
 #define  RT_MOTOR_CTRL_AND_MASK 0xf0
 #define  LT_MOTOR_CTRL_AND_MASK 0x0f
@@ -282,6 +283,8 @@ activateMotors(void)
  int nSpeedIndxR,
      nSpeedIndxL;
 
+ static DWORD dwPrevSendTime = 0;
+
  // distance calculation of wheels
  nClicksToGo     = abs(MotorState[R_MOTOR].nClicksToGo);
 
@@ -309,8 +312,21 @@ activateMotors(void)
 
  // report traveled distance before overflowing wheel click counters
  // this will be true for the 'inlimited' move commands
+ /*
  if ( nClicksTraveled > TRAVEL_DIST_REPORT_THRESH )
     sendMotionStats();
+ */
+
+ // initialize timer
+ if ( dwPrevSendTime == 0 )
+ 	dwPrevSendTime = getGlobalTicks();
+
+ // report travel distance based on a timer interval
+ if ( (getGlobalTicks() - dwPrevSendTime) >= TRAVEL_DIST_REPORT_INTERVAL )
+    {
+     sendMotionStats();
+     dwPrevSendTime = getGlobalTicks();
+    }
 
  // calculate speed indexes for motors
  nSpeedIndxR = nDefSpeedIndx + MotorState[R_MOTOR].nSpeedBias;

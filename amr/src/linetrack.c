@@ -30,7 +30,7 @@
    definitions
 ----------------------------------------- */
 
-#define  FILE_NAME          "C:\\myDocs\\~ downloads\\linetrack" // csv format trace file
+#define  FILE_NAME          "C:\\myDocs\\trace\\linetrack" // csv format trace file
 #define  TXT_BUF            80
 
 #define  BUFFER             128        // console input buffer

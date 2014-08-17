@@ -231,7 +231,7 @@
 
 // -----------------------------------------
 //  HC08 microprocessos state
-//  response to x_DIST_MODE with x_HC08STAT
+//  response to SN_DIST_MODE with SN_GETHC08STAT
 //  < bPayload >
 #define    SN_HC08STAT       61
 //  < wPayload >  = HC08 status word
@@ -295,6 +295,10 @@
 //  < dwPayload > = DW_DONT_CARE
 // -----------------------------------------
 
+/* =========================================
+   t_sonar --> <any>
+========================================= */
+
 // -----------------------------------------
 //  receive SONAR readout result
 //  (message will be returned to requesting task see SONAR_READ)
@@ -305,7 +309,7 @@
 // -----------------------------------------
 
 /* =========================================
-   t_irdet --> t_ctrlex
+   t_sonar --> t_ctrlex
 ========================================= */
 
 // -----------------------------------------
@@ -319,6 +323,8 @@
 
 /* =========================================
    <any> --> <any>
+   Note: destination task must have code
+         to respond to PING
 ========================================= */
 
 // -----------------------------------------
