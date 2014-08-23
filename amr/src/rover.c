@@ -63,6 +63,8 @@
 
 #define  STRING_BUF 20			   // string buffer for frame text
 
+#define  HEARTBEAT	1000
+
 #define  CAM_FRAME_WIDTH  480
 
 #define  RAD_TO_DEG       57.2957795
@@ -71,6 +73,7 @@
 #define  START_PIX        0        // determine to match GP2D scan range
 #define  END_PIX          CAM_FRAME_WIDTH
 #define  PROXIMITY_LIMIT  20       // proximity line in [cm]
+
 typedef struct distanceVector_t    // GP2D measurements
 {
 	float fAngle;
@@ -118,6 +121,10 @@ main(void)
 	int     nSensorErr      = 0;
 
 	DWORD	dwLastPingTime  = 0;
+
+	DWORD	t0;
+	int		nSentHeartbeat  = 0;
+	int		nHeartbeatTimeout = 0;
 
 	int		nCmdInfo;
 	WORD    wPayload;
@@ -252,6 +259,8 @@ main(void)
 	nSegLen = frame->width / SCAN_RES;
 	nProxLim = (frame->height / 2) - PROXIMITY_LIMIT;
 
+	t0 = GetTickCount();
+
 	while ( !nMainExit )
 	{
 		/* ------------------------------
@@ -280,10 +289,23 @@ main(void)
 			}
 		}
 
+		// send a heatbeat ping
+		if ( (GetTickCount() - t0) >= HEARTBEAT && !nSentHeartbeat )
+		{
+			SMTERC_putMsg(nControlTask, MS_PING, (WORD) nNavTask, DW_DONT_CARE);
+			nSentHeartbeat = 1;
+			t0 = GetTickCount();
+		}
+
 		// process AMR responses
 		switch ( SMTERC_getMsg(&nCmdInfo, &wPayload, &dwPayload) )
 		{
 		case Q_EMPTY: // do nothing
+			break;
+
+		case MS_PING:  // got the heatbeat back so reset
+			nSentHeartbeat = 0;
+			nHeartbeatTimeout = 0;
 			break;
 
 		case SONAR_DISTANCE: // sonar distance response
@@ -315,6 +337,13 @@ main(void)
 			nSensorErr = 1;
 		default:      // unexpected response
 			break;
+		}
+
+		// heartbeat sent but not received within HEARTBEAT timeout
+		if ( (GetTickCount() - t0) >= HEARTBEAT && nSentHeartbeat )
+		{
+			nHeartbeatTimeout = 1;
+			nSentHeartbeat = 0;  // try to send more heartbeats becasue this might be a one-time timeout
 		}
 
 		/* ------------------------------
@@ -390,6 +419,15 @@ main(void)
 				cvLine(frame, cvPoint(nX,nY), cvPoint(nX+nSegLen, nY), cvScalar(0, 255, 0, 0), 2, 8, 0);
 				cvLine(frame, cvPoint(0, nProxLim), cvPoint(frame->width, nProxLim), cvScalar(0, 0, 255, 0), 1, 8, 0);
 			}
+		}
+
+		// flash green heartbeat when ok or red when failed
+		if ( (GetTickCount() - t0) > (HEARTBEAT / 2) )
+		{
+			if ( nHeartbeatTimeout )
+				cvCircle(frame, cvPoint(frame->width-20, frame->height-20), 8, cvScalar(0, 0, 255, 0), 3, 8, 0);
+			else
+				cvCircle(frame, cvPoint(frame->width-20, frame->height-20), 8, cvScalar(0, 255, 0, 0), 3, 8, 0);
 		}
 
 		// show image
@@ -479,7 +517,6 @@ ERR_EXIT_GETTASK:
 	SMTERC_deleteRemoteConnection();
 
 ERR_EXIT_SMTERC:
-	// no need to explicitly close 'hStdin'
 
 	printf("exiting\n");
 	return nMainExit;
