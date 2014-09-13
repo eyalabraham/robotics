@@ -699,7 +699,7 @@ wait(void)
           nAlgorithm = (int) wPayload;
           break;
 
-     case MS_PING:
+     case MS_PING: // reply to ping requests
           putMsg((BYTE) wPayload, MS_PING, W_DONT_CARE, DW_DONT_CARE);
           break;
 
@@ -846,6 +846,10 @@ move(void)
              nDefSpeedIndx = MV_SPEED_MIN;
           if ( nDefSpeedIndx > MV_SPEED_MAX )
              nDefSpeedIndx = MV_SPEED_MAX;
+          break;
+
+     case MS_PING: // respond to ping requests even while moving
+          putMsg((BYTE) wPayload, MS_PING, W_DONT_CARE, DW_DONT_CARE);
           break;
 
      default: // default handler

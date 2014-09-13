@@ -1,4 +1,10 @@
 
+9/5/2014
+----------
+t_ctrlex.c
+  added response to 'ping' into move() state
+amrex.exe rebuild 9/5 @ 23:33
+
 8/9/2014
 ----------
 t_ctrlex.c

@@ -1,5 +1,4 @@
-AMREX04 .EXE   10/20 5:27pm build
-AMREX00 .EXE   11/25 2:01pm build with data logging
+AMREX   .EXE   9/5/14 23:33 ping response added to move()
 
 COMMAND .LST   command file
 DOWN    .COM   x-model download
